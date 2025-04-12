@@ -32,7 +32,7 @@ export async function POST({ params, request, cookies }: RequestEvent) {
     const compressedBuffer = await sharp(buffer)
         .rotate()
         .resize({ width: 300, height: 300 })
-        .jpeg({ quality: 60 })
+        .avif({ quality: 60 })
         .toBuffer();
 
     try {

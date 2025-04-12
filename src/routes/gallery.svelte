@@ -28,7 +28,7 @@
 			console.log('no files selected');
 			return;
 		}
-
+		alert("started uploading")
 		for (const file of files) {
 			const formData = new FormData();
 			formData.append('file', file);
@@ -47,9 +47,11 @@
 			}
 		}
 		alert('finished uploading');
-
 		files = [];
-		await loadThumbnails();
+		if (active) {
+			await loadThumbnails();
+		}
+		
 	}
 </script>
 
