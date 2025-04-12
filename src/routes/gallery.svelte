@@ -1,18 +1,17 @@
 <script lang="ts">
 	import { type Thumbnail } from '$lib/images';
-	import { Button, Modal } from 'flowbite-svelte';
+	import { Button, ImagePlaceholder, Modal } from 'flowbite-svelte';
 
 	let { active, close, data, authed } = $props();
 	let files = $state<File[]>([]);
-	let thumbnails = $state<Thumbnail[]>([]);
+	let thumbnails = $state<Promise<Thumbnail[]>>();
 	let fullScreen = $state(false);
 	let fullResURL = $state('');
 
 	async function loadThumbnails() {
-		thumbnails = [];
-		const res = await fetch(`/thumbnails/${data.id}`);
-		const body = await res.json();
-		thumbnails = body.thumbnails;
+		thumbnails = fetch(`/thumbnails/${data.id}`)
+			.then((res) => res.json())
+			.then((body) => body.thumbnails);
 	}
 
 	$effect(() => {
@@ -47,26 +46,34 @@
 				console.log(`${file.name}: Upload failed`);
 			}
 		}
-		alert("finished uploading")
+		alert('finished uploading');
 
 		files = [];
 		await loadThumbnails();
 	}
-	$inspect(thumbnails);
 </script>
 
-<Modal bind:open={active} autoclose size="md">
+<div class="h-screen flex items-center"></div>
+<Modal bind:open={active} size="md" class="min-h-[500px] z-999">
 	<div class="p-4">
 		<div class="overflow-y-auto" style="max-height: 300px;">
 			<div class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
-				{#each thumbnails as thumb}
-					<img
-						onclick={() => openFullScreen(thumb.full)}
-						src={thumb.url}
-						alt="Thumbnail"
-						class="h-auto w-full rounded object-cover"
-					/>
-				{/each}
+				{#await thumbnails}
+					{#each { length: 10 }}
+						<ImagePlaceholder imgOnly imgHeight="60" class="h-auto w-full rounded object-cover" />
+					{/each}
+				{:then thumbnails}
+					{#if thumbnails != undefined}
+						{#each thumbnails as thumb}
+							<img
+								onclick={() => openFullScreen(thumb.full)}
+								src={thumb.url}
+								alt="Thumbnail"
+								class="h-auto w-full rounded object-cover"
+							/>
+						{/each}
+					{/if}
+				{/await}
 			</div>
 		</div>
 	</div>
@@ -89,8 +96,8 @@
 	</svelte:fragment>
 </Modal>
 
-<Modal bind:open={fullScreen} autoclose>
-	<div class="flex justify-center items-center">
+<Modal bind:open={fullScreen} autoclose class="z-999">
+	<div class="flex items-center justify-center">
 		<img src={fullResURL} alt="image" class="max-h-[80vh] max-w-full rounded" />
 	</div>
 	<svelte:fragment slot="footer">

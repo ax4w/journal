@@ -60,7 +60,7 @@
 
 <main class="h-screen">
 	<Map {locations} {Gallery} {searchResult} {SearchPopUp} refresh={load} authed={loggedIn}/>
-	<div class="absolute top-4 right-0 left-0 z-50 grid grid-cols-[auto_1fr_auto] items-center">
+	<div class="absolute top-4 right-0 left-0 z-50 hidden sm:grid grid-cols-[auto_1fr_auto] items-center">
 		<div class="ml-4 w-fit rounded-xl bg-neutral-950/50 shadow-xl backdrop-blur-sm">
 			<Button onclick={() => loggedIn ? logout() : (loginModal = true)}><ArrowLeftToBracketOutline /></Button>
 		</div>
