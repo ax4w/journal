@@ -2,7 +2,7 @@
 	import 'leaflet/dist/leaflet.css';
 	import { onDestroy, onMount } from 'svelte';
 	import markerIconUrl from 'leaflet/dist/images/marker-icon.png';
-	import markerIconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png';
+	import addIconUrl from '$lib/add.png';
 	import markerShadowUrl from 'leaflet/dist/images/marker-shadow.png';
 	import type { Location } from '$lib/location';
 
@@ -73,7 +73,6 @@
 
 		let defaultIcon = leaflet.icon({
 			iconUrl: markerIconUrl,
-			iconRetinaUrl: markerIconRetinaUrl,
 			shadowUrl: markerShadowUrl,
 			iconSize: [25, 41],
 			iconAnchor: [12, 41],
@@ -82,6 +81,14 @@
 		});
 
 		if (searchResult) {
+			defaultIcon = leaflet.icon({
+				iconUrl: addIconUrl,
+				shadowUrl: markerShadowUrl,
+				iconSize: [25, 41],
+				iconAnchor: [12, 41],
+				popupAnchor: [1, -34],
+				shadowSize: [41, 41]
+			});
 		}
 
 		locations.forEach((loc) => {
@@ -117,5 +124,5 @@
 </script>
 
 <div bind:this={mapElement} class="z-0 h-full w-full"></div>
-<Gallery active={showGallery} close={closeModal} data={modalData} {authed}/>
+<Gallery active={showGallery} close={closeModal} data={modalData} {authed} />
 <SearchPopUp active={showModal} close={closeAddModal} data={modalData} />

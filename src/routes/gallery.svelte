@@ -53,7 +53,6 @@
 	}
 </script>
 
-<div class="h-screen flex items-center"></div>
 <Modal bind:open={active} size="md" class="min-h-[500px] z-999">
 	<div class="p-4">
 		<div class="overflow-y-auto" style="max-height: 300px;">
