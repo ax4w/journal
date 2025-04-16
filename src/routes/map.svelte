@@ -3,7 +3,6 @@
 	import maplibregl from 'maplibre-gl';
 	import 'maplibre-gl/dist/maplibre-gl.css';
 	import { onMount } from 'svelte';
-	import addIconUrl from '$lib/add.png';
 
 	let { locations, Gallery, searchResult, SearchPopUp, refresh, authed } = $props();
 
@@ -30,12 +29,18 @@
 			center: [0, 0],
 			zoom: 1
 		});
+		
+		map.on('style.load', () => {
+			map.setProjection({
+				type: 'globe'
+			});
+		});
 	});
 
 	function clearAllMarkers() {
 		if (map) {
 			markers.forEach((marker) => {
-				marker.remove()
+				marker.remove();
 			});
 		}
 		markers = [];
@@ -73,7 +78,7 @@
 				showModal = true;
 			}
 		});
-		markers.push(marker)
+		markers.push(marker);
 	}
 
 	function addLocationMarker(loc: Location) {
@@ -86,13 +91,13 @@
 				lon: loc.lon
 			};
 			if (showGallery) {
-					showGallery = false;
-					marker.getElement().click();
-				} else {
-					showGallery = true;
-				}
+				showGallery = false;
+				marker.getElement().click();
+			} else {
+				showGallery = true;
+			}
 		});
-		markers.push(marker)
+		markers.push(marker);
 	}
 </script>
 
