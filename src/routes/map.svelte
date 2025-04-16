@@ -1,6 +1,5 @@
 <script lang="ts">
 	import type { Location } from '$lib/location';
-	import { getMapTilerKey } from '$lib/map';
 	import maplibregl from 'maplibre-gl';
 	import 'maplibre-gl/dist/maplibre-gl.css';
 	import { onMount } from 'svelte';
@@ -26,7 +25,7 @@
 	onMount(() => {
 		map = new maplibregl.Map({
 			container: 'map',
-			style:  `https://api.maptiler.com/maps/streets-v2/style.json?key=${getMapTilerKey()}`,
+			style:  `https://api.maptiler.com/maps/streets-v2/style.json?key=vCj2ptPvHwdumeLayQPp`,
 			center: [0, 0],
 			zoom: 1
 		});
