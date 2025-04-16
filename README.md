@@ -17,8 +17,11 @@ SECRET_ACCESS_KEY=<bucket access secret>
 BUCKET=<bucket name>
 ENDPOINT=https://url-to-your-bucket
 PASSWORD=<admin password>
+MAPTILER_API=<key>
 ```
 All these environment variables need to be set. I can recommend to use [neon](https://neon.tech) for the database and [Cloudflare R2](https://www.cloudflare.com/de-de/developer-platform/products/r2/) for the buckets. 
+
+You can leave MAPTILER_API blank if you want to use other tiling images. You just need to change the URL in `map.svelte`
 
 ### Changing Database
 If you don't want to use neon for your database you can just change the drizzle configuration in `src/lib/db/db.server.ts` 
