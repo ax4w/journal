@@ -1,16 +1,14 @@
 <script lang="ts">
-	import 'leaflet/dist/leaflet.css';
-	import { onDestroy, onMount } from 'svelte';
-	import markerIconUrl from 'leaflet/dist/images/marker-icon.png';
-	import addIconUrl from '$lib/add.png';
-	import markerShadowUrl from 'leaflet/dist/images/marker-shadow.png';
 	import type { Location } from '$lib/location';
+	import maplibregl from 'maplibre-gl';
+	import 'maplibre-gl/dist/maplibre-gl.css';
+	import { onMount } from 'svelte';
+	import addIconUrl from '$lib/add.png';
 
 	let { locations, Gallery, searchResult, SearchPopUp, refresh, authed } = $props();
 
 	let mapElement = $state<HTMLDivElement | null>(null);
 	let map: any;
-	let leaflet: any;
 	let markers: any[];
 
 	let showModal = $state(false);
@@ -20,41 +18,24 @@
 	$effect(() => {
 		if (locations) {
 			clearAllMarkers();
-			addMakers(locations, false);
-			addMakers(searchResult, true);
+			addMarkers(locations, false);
+			addMarkers(searchResult, true);
 		}
 	});
 
-	onMount(async () => {
-		leaflet = await import('leaflet');
-		if (mapElement == null) {
-			console.log('map element is null');
-			return;
-		}
-		map = leaflet.map(mapElement, { zoomControl: false }).setView([0, 0], 2);
-		leaflet
-			.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-				noWrap: true,
-				attribution:
-					'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-			})
-			.addTo(map);
-	});
-
-	onDestroy(() => {
-		clearAllMarkers();
-		if (map) {
-			console.log('Unloading Leaflet map.');
-			map.remove();
-			map = null;
-		}
-		leaflet = null;
+	onMount(() => {
+		map = new maplibregl.Map({
+			container: 'map',
+			style: 'https://demotiles.maplibre.org/style.json',
+			center: [0, 0],
+			zoom: 1
+		});
 	});
 
 	function clearAllMarkers() {
 		if (map) {
 			markers.forEach((marker) => {
-				map.removeLayer(marker);
+				marker.remove()
 			});
 		}
 		markers = [];
@@ -68,61 +49,53 @@
 		refresh();
 	}
 
-	function addMakers(locations: Location[], searchResult: boolean) {
-		if (!map || !leaflet) return;
-
-		let defaultIcon = leaflet.icon({
-			iconUrl: markerIconUrl,
-			shadowUrl: markerShadowUrl,
-			iconSize: [25, 41],
-			iconAnchor: [12, 41],
-			popupAnchor: [1, -34],
-			shadowSize: [41, 41]
+	function addMarkers(locations: Location[], isSearchResult: boolean) {
+		locations.forEach((e) => {
+			if (isSearchResult) addSearchMarker(e);
+			else addLocationMarker(e);
 		});
+	}
 
-		if (searchResult) {
-			defaultIcon = leaflet.icon({
-				iconUrl: addIconUrl,
-				shadowUrl: markerShadowUrl,
-				iconSize: [25, 41],
-				iconAnchor: [12, 41],
-				popupAnchor: [1, -34],
-				shadowSize: [41, 41]
-			});
-		}
+	function addSearchMarker(loc: Location) {
+		let marker = new maplibregl.Marker().setLngLat([loc.lon, loc.lat]).addTo(map);
+		marker.getElement().style.filter = 'hue-rotate(120deg)';
+		marker.getElement().addEventListener('click', () => {
+			modalData = {
+				id: loc.id,
+				name: loc.name,
+				lat: loc.lat,
+				lon: loc.lon
+			};
+			if (showModal) {
+				showModal = false;
+				marker.getElement().click();
+			} else {
+				showModal = true;
+			}
+		});
+		markers.push(marker)
+	}
 
-		locations.forEach((loc) => {
-			const marker = leaflet.marker([loc.lat, loc.lon], { icon: defaultIcon }).addTo(map);
-
-			markers.push(marker);
-
-			marker.on('click', () => {
-				modalData = {
-					id: loc.id,
-					name: loc.name,
-					lat: loc.lat,
-					lon: loc.lon
-				};
-				if (searchResult) {
-					if (showModal) {
-						showModal = false;
-						marker.fire('click');
-					} else {
-						showModal = true;
-					}
+	function addLocationMarker(loc: Location) {
+		let marker = new maplibregl.Marker().setLngLat([loc.lon, loc.lat]).addTo(map);
+		marker.getElement().addEventListener('click', () => {
+			modalData = {
+				id: loc.id,
+				name: loc.name,
+				lat: loc.lat,
+				lon: loc.lon
+			};
+			if (showGallery) {
+					showGallery = false;
+					marker.getElement().click();
 				} else {
-					if (showGallery) {
-						showGallery = false;
-						marker.fire('click');
-					} else {
-						showGallery = true;
-					}
+					showGallery = true;
 				}
-			});
 		});
+		markers.push(marker)
 	}
 </script>
 
-<div bind:this={mapElement} class="z-0 h-full w-full"></div>
+<div id="map" bind:this={mapElement} class="z-0 h-full w-full"></div>
 <Gallery active={showGallery} close={closeModal} data={modalData} {authed} />
 <SearchPopUp active={showModal} close={closeAddModal} data={modalData} />

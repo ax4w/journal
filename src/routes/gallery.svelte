@@ -15,6 +15,7 @@
 	}
 
 	$effect(() => {
+		console.log(data)
 		if (data && data.id > 0) loadThumbnails();
 	});
 
