@@ -25,7 +25,7 @@
 	onMount(() => {
 		map = new maplibregl.Map({
 			container: 'map',
-			style: 'https://demotiles.maplibre.org/style.json',
+			style: 'https://api.maptiler.com/maps/streets-v2/style.json?key=oS7z1SX8vLnhj4i5yUhM',
 			center: [0, 0],
 			zoom: 1
 		});
