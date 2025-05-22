@@ -65,14 +65,20 @@
 					{/each}
 				{:then thumbnails}
 					{#if thumbnails != undefined}
-						{#each thumbnails as thumb}
-							<img
-								onclick={() => openFullScreen(thumb.full)}
-								src={thumb.url}
-								alt="Thumbnail"
-								class="h-auto w-full rounded object-cover"
-							/>
-						{/each}
+						{#if thumbnails.length == 0}
+							<div class="flex h-full flex-col items-center justify-center">
+								<p>No images found</p>
+							</div>
+						{:else}
+							{#each thumbnails as thumb}
+								<img
+									onclick={() => openFullScreen(thumb.full)}
+									src={thumb.url}
+									alt="Thumbnail"
+									class="h-auto w-full rounded object-cover"
+								/>
+							{/each}
+						{/if}
 					{:else}
 						<div class="flex h-full flex-col items-center justify-center">
 							<p>No images found</p>
