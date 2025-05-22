@@ -25,7 +25,7 @@
 	onMount(() => {
 		map = new maplibregl.Map({
 			container: 'map',
-			style: `https://api.maptiler.com/maps/streets-v2/style.json?key=vCj2ptPvHwdumeLayQPp`,
+			style: `https://api.maptiler.com/maps/planet/style.json?key=vCj2ptPvHwdumeLayQPp`,
 			center: [0, 0],
 			zoom: 1
 		});
@@ -107,20 +107,6 @@
 
 <style>
 	#map {
-		background-image:
-			radial-gradient(white, rgba(255, 255, 255, 0.2) 2px, transparent 40px),
-			radial-gradient(white, rgba(255, 255, 255, 0.15) 1px, transparent 30px),
-			radial-gradient(white, rgba(255, 255, 255, 0.1) 2px, transparent 40px),
-			radial-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.1) 2px, transparent 30px);
-		background-size:
-			550px 550px,
-			350px 350px,
-			250px 250px,
-			150px 150px;
-		background-position:
-			0 0,
-			40px 60px,
-			130px 270px,
-			70px 100px;
+		background: #000;
 	}
 </style>
