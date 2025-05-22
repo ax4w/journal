@@ -15,7 +15,7 @@
 	}
 
 	$effect(() => {
-		console.log(data)
+		console.log(data);
 		if (data && data.id > 0) loadThumbnails();
 	});
 
@@ -29,7 +29,7 @@
 			console.log('no files selected');
 			return;
 		}
-		alert("started uploading")
+		alert('started uploading');
 		for (const file of files) {
 			const formData = new FormData();
 			formData.append('file', file);
@@ -52,11 +52,10 @@
 		if (active) {
 			await loadThumbnails();
 		}
-		
 	}
 </script>
 
-<Modal bind:open={active} size="md" class="min-h-[500px] z-999">
+<Modal bind:open={active} size="md" class="z-999 min-h-[500px]">
 	<div class="p-4">
 		<div class="overflow-y-auto" style="max-height: 300px;">
 			<div class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
@@ -74,6 +73,10 @@
 								class="h-auto w-full rounded object-cover"
 							/>
 						{/each}
+					{:else}
+						<div class="flex h-full flex-col items-center justify-center">
+							<p>No images found</p>
+						</div>
 					{/if}
 				{/await}
 			</div>
