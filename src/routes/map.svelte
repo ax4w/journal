@@ -25,14 +25,22 @@
 	onMount(() => {
 		map = new maplibregl.Map({
 			container: 'map',
-			style:  `https://api.maptiler.com/maps/streets-v2/style.json?key=vCj2ptPvHwdumeLayQPp`,
+			style: `https://api.maptiler.com/maps/streets-v2/style.json?key=vCj2ptPvHwdumeLayQPp`,
 			center: [0, 0],
 			zoom: 1
 		});
-		
+
 		map.on('style.load', () => {
 			map.setProjection({
 				type: 'globe'
+			});
+			map.setFog({
+				color: 'rgb(186, 210, 235)',
+				'high-color': 'rgb(36, 92, 223)',
+				'horizon-blend': 0.02,
+				'star-intensity': 0.6,
+
+				'space-color': 'rgb(0, 0, 0)' // Farbe des Weltalls (hier schwarz)
 			});
 		});
 	});
