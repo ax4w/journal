@@ -34,14 +34,6 @@
 			map.setProjection({
 				type: 'globe'
 			});
-			map.setFog({
-				color: 'rgb(186, 210, 235)',
-				'high-color': 'rgb(36, 92, 223)',
-				'horizon-blend': 0.02,
-				'star-intensity': 0.6,
-
-				'space-color': 'rgb(0, 0, 0)' // Farbe des Weltalls (hier schwarz)
-			});
 		});
 	});
 
@@ -112,3 +104,9 @@
 <div id="map" bind:this={mapElement} class="z-0 h-full w-full"></div>
 <Gallery active={showGallery} close={closeModal} data={modalData} {authed} />
 <SearchPopUp active={showModal} close={closeAddModal} data={modalData} />
+
+<style>
+	#map {
+		background: #000;
+	}
+</style>
