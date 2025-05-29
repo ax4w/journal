@@ -123,6 +123,6 @@
 
 <style>
 	#map {
-		background: #1c1c1c;
+		background: #000;
 	}
 </style>
