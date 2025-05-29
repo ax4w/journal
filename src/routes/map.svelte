@@ -72,8 +72,8 @@
 		const el = document.createElement('div');
 		el.className = 'marker';
 		el.style.backgroundImage = "url('/grey_question.png')";
-		el.style.width = `25px`;
-		el.style.height = `25px`;
+		el.style.width = `30px`;
+		el.style.height = `30px`;
 		let marker = new maplibregl.Marker({element: el}).setLngLat([loc.lon, loc.lat]).addTo(map);
 		el.addEventListener('click', () => {
 			modalData = {
@@ -96,8 +96,8 @@
 		const el = document.createElement('div');
 		el.className = 'marker';
 		el.style.backgroundImage = "url('/round_pushpin.png')";
-		el.style.width = `25px`;
-		el.style.height = `25px`;
+		el.style.width = `30px`;
+		el.style.height = `30px`;
 		let marker = new maplibregl.Marker({element: el}).setLngLat([loc.lon, loc.lat]).addTo(map);
 		el.addEventListener('click', () => {
 			modalData = {
