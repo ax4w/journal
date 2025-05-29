@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Button, Input, Label, Modal } from 'flowbite-svelte';
 
-	let { active, refresh } = $props();
+	let { active, onSuccess, onFail } = $props();
     let password = $state("")
 
     async function login() {
@@ -14,10 +14,12 @@
         })
         let body = await resp.json()
         if (body.success) {
-            refresh()
+            onSuccess()
         }else{
+            onFail()
             alert("wrong password")
         }
+        password = ""
     }
 </script>
 

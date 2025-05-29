@@ -15,6 +15,13 @@
 	let modalData = $state<Location>({ id: 0, name: '', lat: 0, lon: 0 });
 
 	$effect(() => {
+		if (!authed) {
+			clearAllMarkers();
+			addMarkers(locations, false);
+		}
+	})
+
+	$effect(() => {
 		if (locations) {
 			clearAllMarkers();
 			addMarkers(locations, false);
@@ -116,6 +123,6 @@
 
 <style>
 	#map {
-		background: #000;
+		background: #1c1c1c;
 	}
 </style>

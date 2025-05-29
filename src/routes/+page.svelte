@@ -50,6 +50,7 @@
 			method: "POST"
 		})
 		await auth()
+		loginModal = false
 	}
 
 	onMount(async () => {
@@ -78,4 +79,4 @@
 	</div>
 </main>
 
-<Login refresh={auth} active={loginModal}/>
+<Login onSuccess={auth} onFail={() => loginModal = false} active={loginModal}/>
