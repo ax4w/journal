@@ -62,9 +62,13 @@
 	}
 
 	function addSearchMarker(loc: Location) {
-		let marker = new maplibregl.Marker().setLngLat([loc.lon, loc.lat]).addTo(map);
-		marker.getElement().style.filter = 'hue-rotate(120deg)';
-		marker.getElement().addEventListener('click', () => {
+		const el = document.createElement('div');
+		el.className = 'marker';
+		el.style.backgroundImage = "url('/grey_question.png')";
+		el.style.width = `25px`;
+		el.style.height = `25px`;
+		let marker = new maplibregl.Marker({element: el}).setLngLat([loc.lon, loc.lat]).addTo(map);
+		el.addEventListener('click', () => {
 			modalData = {
 				id: loc.id,
 				name: loc.name,
@@ -82,26 +86,6 @@
 	}
 
 	function addLocationMarker(loc: Location) {
-		//%sveltekit.assets%/favicon.png
-		/*
-		       const el = document.createElement('div');
-        el.className = 'marker';
-        el.style.backgroundImage =
-            `url(https://picsum.photos/${
-                marker.properties.iconSize.join('/')
-            }/)`;
-        el.style.width = `${marker.properties.iconSize[0]}px`;
-        el.style.height = `${marker.properties.iconSize[1]}px`;
-
-        el.addEventListener('click', () => {
-            window.alert(marker.properties.message);
-        });
-
-        // add marker to map
-        new maplibregl.Marker({element: el})
-            .setLngLat(marker.geometry.coordinates)
-            .addTo(map);
-		 */
 		const el = document.createElement('div');
 		el.className = 'marker';
 		el.style.backgroundImage = "url('/round_pushpin.png')";
