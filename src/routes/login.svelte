@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { Button, Input, Label, Modal } from 'flowbite-svelte';
-	import { QuestionCircleOutline } from 'flowbite-svelte-icons';
 
 	let { active, refresh } = $props();
     let password = $state("")

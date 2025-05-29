@@ -64,15 +64,17 @@
 		<div class="ml-4 w-fit rounded-xl bg-neutral-950/50 shadow-xl backdrop-blur-sm">
 			<Button onclick={() => loggedIn ? logout() : (loginModal = true)}><ArrowLeftToBracketOutline /></Button>
 		</div>
-		<div hidden={!loggedIn} class="mx-auto flex w-full max-w-lg rounded-xl shadow-xl backdrop-blur-sm">
-			<Input bind:value={searchInput} placeholder="Add..." />
-			<Button
-				disabled={searchInput.length == 0}
-				color="blue"
-				class="mr-1 ml-2"
-				onclick={() => search()}>Search</Button
-			>
-		</div>
+		{#if loggedIn}
+			<div class="mx-auto flex w-full max-w-lg rounded-xl shadow-xl backdrop-blur-sm">
+				<Input bind:value={searchInput} placeholder="Add..." />
+				<Button
+					disabled={searchInput.length == 0}
+					color="blue"
+					class="mr-1 ml-2"
+					onclick={() => search()}>Search</Button
+				>
+			</div>
+		{/if}
 	</div>
 </main>
 

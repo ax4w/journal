@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { type Thumbnail } from '$lib/images';
 	import { Button, ImagePlaceholder, Modal } from 'flowbite-svelte';
+	import { TrashBinSolid } from 'flowbite-svelte-icons';
 
-	let { active, close, data, authed } = $props();
+	let { active, data, authed } = $props();
 	let files = $state<File[]>([]);
 	let thumbnails = $state<Promise<Thumbnail[]>>();
 	let fullScreen = $state(false);
@@ -22,6 +23,20 @@
 	function openFullScreen(url: string) {
 		fullResURL = url;
 		fullScreen = true;
+	}
+
+	async function Delete(id: string) {
+		let args = id.split('/');
+		if (args.length == 0) {
+			return;
+		}
+		await fetch(`/delete/${args[0]}/${args[args.length-1]}`, {
+			method: 'DELETE',
+		});
+
+		if (active) {
+			await loadThumbnails();
+		}
 	}
 
 	async function upload(id: number) {
@@ -71,12 +86,22 @@
 							</div>
 						{:else}
 							{#each thumbnails as thumb}
-								<img
-									onclick={() => openFullScreen(thumb.full)}
-									src={thumb.url}
-									alt="Thumbnail"
-									class="h-auto w-full rounded object-cover"
-								/>
+								<div class="relative">
+									<img
+										onclick={() => openFullScreen(thumb.full)}
+										src={thumb.url}
+										alt="Thumbnail"
+										class="h-auto w-full rounded object-cover"
+									/>
+									{#if authed} 
+										<Button
+											class="absolute top-1 right-1"
+											onclick={() => {
+												Delete(thumb.key);
+											}}><TrashBinSolid /></Button
+										>
+									{/if}
+								</div>
 							{/each}
 						{/if}
 					{:else}
@@ -92,18 +117,20 @@
 		<p>{data.name}</p>
 	</svelte:fragment>
 	<svelte:fragment slot="footer">
-		<div class="flex flex-wrap gap-2" hidden={!authed}>
-			<input
-				class="rounded-xl"
-				type="file"
-				multiple
-				onchange={(e) => {
-					const input = e.target as HTMLInputElement;
-					files = input.files ? Array.from(input.files) : [];
-				}}
-			/>
-			<Button color="blue" onclick={() => upload(data.id)}>Upload</Button>
-		</div>
+		{#if authed}
+			<div class="flex flex-wrap gap-2">
+				<input
+					class="rounded-xl"
+					type="file"
+					multiple
+					onchange={(e) => {
+						const input = e.target as HTMLInputElement;
+						files = input.files ? Array.from(input.files) : [];
+					}}
+				/>
+				<Button color="blue" onclick={() => upload(data.id)}>Upload</Button>
+			</div>
+		{/if}
 	</svelte:fragment>
 </Modal>
 
