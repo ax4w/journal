@@ -10,7 +10,7 @@ import {
 import { error, json, type RequestEvent } from '@sveltejs/kit';
 import sharp from 'sharp';
 
-export async function DELETE({ params, request, cookies }: RequestEvent) {
+export async function DELETE({ params, cookies }: RequestEvent) {
 	let auth = cookies.get('auth');
 	if (!auth || !validateCookie(auth)) {
 		throw error(400, 'no auth cookie set');
