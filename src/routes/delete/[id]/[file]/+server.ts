@@ -1,14 +1,7 @@
 import { s3 } from '$lib/images';
-import { isValidLocation } from '$lib/queries/select';
 import { validateCookie } from '$lib/session';
-import {
-	DeleteObjectCommand,
-	ListObjectsCommand,
-	PutObjectCommand,
-	S3Client
-} from '@aws-sdk/client-s3';
+import { DeleteObjectCommand } from '@aws-sdk/client-s3';
 import { error, json, type RequestEvent } from '@sveltejs/kit';
-import sharp from 'sharp';
 
 export async function DELETE({ params, cookies }: RequestEvent) {
 	let auth = cookies.get('auth');
@@ -24,22 +17,22 @@ export async function DELETE({ params, cookies }: RequestEvent) {
 		throw error(400, 'no id provided');
 	}
 
-    const fullKey = `${id}/img/${file}`;
-    const thumbKey = `${id}/thumb/${file}`;
+	const fullKey = `${id}/img/${file}`;
+	const thumbKey = `${id}/thumb/${file}`;
 	try {
 		await s3.send(
 			new DeleteObjectCommand({
 				Bucket: process.env.BUCKET!,
-				Key: fullKey,
+				Key: fullKey
 			})
 		);
-        await s3.send(
+		await s3.send(
 			new DeleteObjectCommand({
 				Bucket: process.env.BUCKET!,
-				Key: thumbKey,
+				Key: thumbKey
 			})
 		);
-        return json({ message: 'upload successful' });
+		return json({ message: 'upload successful' });
 	} catch (err: any) {
 		throw error(500, 'file was not uploaded');
 	}
