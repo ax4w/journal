@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { type Thumbnail } from '$lib/images';
-	import { Button, ImagePlaceholder, Modal } from 'flowbite-svelte';
+	import { Banner, Button, ImagePlaceholder, Modal } from 'flowbite-svelte';
 	import { TrashBinSolid } from 'flowbite-svelte-icons';
 
 	let { active, data, authed } = $props();
@@ -134,11 +134,9 @@
 	</svelte:fragment>
 </Modal>
 
-<Modal bind:open={fullScreen} autoclose class="z-999">
+
+<Modal bind:open={fullScreen} autoclose class="z-999" size="lg">
 	<div class="flex items-center justify-center">
 		<img src={fullResURL} alt="image" class="max-h-[80vh] max-w-full rounded" />
 	</div>
-	<svelte:fragment slot="footer">
-		<Button color="green" class="me-2" onclick={() => (fullScreen = false)}>Close</Button>
-	</svelte:fragment>
 </Modal>
