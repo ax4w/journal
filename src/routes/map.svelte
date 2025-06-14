@@ -97,7 +97,6 @@
 		const el = document.createElement('div');
 		el.className = 'marker';
 		el.style.backgroundImage = `url(${loc.url})`;
-		console.log(loc)
 		el.style.width = `40px`;
 		el.style.borderRadius = `10px`;
 		el.style.height = `40px`;
