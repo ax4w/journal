@@ -3,6 +3,7 @@ export interface Location {
     name: string;
     lat: number;
     lon: number;
+    url: string;
 }
 
 export async function allCooridantesForSearch(search: string) {

@@ -12,7 +12,7 @@
 
 	let showModal = $state(false);
 	let showGallery = $state(false);
-	let modalData = $state<Location>({ id: 0, name: '', lat: 0, lon: 0 });
+	let modalData = $state<Location>({ id: 0, name: '', lat: 0, lon: 0, url : "" });
 
 	$effect(() => {
 		if (!authed) {
@@ -80,7 +80,8 @@
 				id: loc.id,
 				name: loc.name,
 				lat: loc.lat,
-				lon: loc.lon
+				lon: loc.lon,
+				url: "",
 			};
 			if (showModal) {
 				showModal = false;
@@ -92,19 +93,24 @@
 		markers.push(marker);
 	}
 
-	function addLocationMarker(loc: Location) {
+	async function addLocationMarker(loc: Location) {
 		const el = document.createElement('div');
 		el.className = 'marker';
-		el.style.backgroundImage = "url('/round_pushpin.png')";
-		el.style.width = `30px`;
-		el.style.height = `30px`;
+		el.style.backgroundImage = `url(${loc.url})`;
+		console.log(loc)
+		el.style.width = `40px`;
+		el.style.borderRadius = `10px`;
+		el.style.height = `40px`;
+		el.style.backgroundSize = 'cover'; // Ensures the image covers the 30x30 area
+		el.style.backgroundPosition = 'center'; // Centers the image within the div
 		let marker = new maplibregl.Marker({element: el}).setLngLat([loc.lon, loc.lat]).addTo(map);
 		el.addEventListener('click', () => {
 			modalData = {
 				id: loc.id,
 				name: loc.name,
 				lat: loc.lat,
-				lon: loc.lon
+				lon: loc.lon,
+				url: loc.url,
 			};
 			if (showGallery) {
 				showGallery = false;

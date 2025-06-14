@@ -26,7 +26,8 @@
 				id: e.id,
                 name: e.name,
                 lat: e.lat,
-                lon: e.lon
+                lon: e.lon,
+				url : "",
             })
         })
 		searchInput = ""
@@ -35,7 +36,7 @@
 	async function load() {
 		let resp = await fetch("/list")
 		let body = await resp.json()
-		locations = body.locations
+		locations = body.locationsM
 		searchResult = []
 	}
 
