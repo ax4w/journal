@@ -135,7 +135,7 @@
 </Modal>
 
 
-<Modal bind:open={fullScreen} autoclose class="z-999" size="lg">
+<Modal bind:open={fullScreen} autoclose class="z-999" size="lg" >
 	<div class="flex items-center justify-center">
 		<img src={fullResURL} alt="image" class="max-h-[80vh] max-w-full rounded" />
 	</div>
