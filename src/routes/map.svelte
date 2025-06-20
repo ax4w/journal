@@ -12,14 +12,14 @@
 
 	let showModal = $state(false);
 	let showGallery = $state(false);
-	let modalData = $state<Location>({ id: 0, name: '', lat: 0, lon: 0, url : "" });
+	let modalData = $state<Location>({ id: 0, name: '', lat: 0, lon: 0, url: '' });
 
 	$effect(() => {
 		if (!authed) {
 			clearAllMarkers();
 			addMarkers(locations, false);
 		}
-	})
+	});
 
 	$effect(() => {
 		if (locations) {
@@ -74,14 +74,14 @@
 		el.style.backgroundImage = "url('/grey_question.png')";
 		el.style.width = `30px`;
 		el.style.height = `30px`;
-		let marker = new maplibregl.Marker({element: el}).setLngLat([loc.lon, loc.lat]).addTo(map);
+		let marker = new maplibregl.Marker({ element: el }).setLngLat([loc.lon, loc.lat]).addTo(map);
 		el.addEventListener('click', () => {
 			modalData = {
 				id: loc.id,
 				name: loc.name,
 				lat: loc.lat,
 				lon: loc.lon,
-				url: "",
+				url: ''
 			};
 			if (showModal) {
 				showModal = false;
@@ -93,7 +93,7 @@
 		markers.push(marker);
 	}
 
-	async function addLocationMarker(loc: Location) {
+	function addMarkerWithImage(loc: Location) {
 		const el = document.createElement('div');
 		el.className = 'marker';
 		el.style.backgroundImage = `url(${loc.url})`;
@@ -102,14 +102,14 @@
 		el.style.height = `40px`;
 		el.style.backgroundSize = 'cover'; // Ensures the image covers the 30x30 area
 		el.style.backgroundPosition = 'center'; // Centers the image within the div
-		let marker = new maplibregl.Marker({element: el}).setLngLat([loc.lon, loc.lat]).addTo(map);
+		let marker = new maplibregl.Marker({ element: el }).setLngLat([loc.lon, loc.lat]).addTo(map);
 		el.addEventListener('click', () => {
 			modalData = {
 				id: loc.id,
 				name: loc.name,
 				lat: loc.lat,
 				lon: loc.lon,
-				url: loc.url,
+				url: loc.url
 			};
 			if (showGallery) {
 				showGallery = false;
@@ -119,6 +119,34 @@
 			}
 		});
 		markers.push(marker);
+	}
+
+	async function addLocationMarker(loc: Location) {
+		if (loc.url.length > 0) addMarkerWithImage(loc);
+		else {
+			const el = document.createElement('div');
+			el.className = 'marker';
+			el.style.backgroundImage = "url('/round_pushpin.png')";
+			el.style.width = `30px`;
+			el.style.height = `30px`;
+			let marker = new maplibregl.Marker({ element: el }).setLngLat([loc.lon, loc.lat]).addTo(map);
+			el.addEventListener('click', () => {
+				modalData = {
+					id: loc.id,
+					name: loc.name,
+					lat: loc.lat,
+					lon: loc.lon,
+					url: loc.url
+				};
+				if (showGallery) {
+					showGallery = false;
+					marker.getElement().click();
+				} else {
+					showGallery = true;
+				}
+			});
+			markers.push(marker);
+		}
 	}
 </script>
 

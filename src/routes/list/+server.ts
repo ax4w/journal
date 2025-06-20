@@ -30,6 +30,14 @@ export async function GET({}: RequestEvent) {
 		if (thumbnails.length > 0) {
 			const ind: number = Math.floor(Math.random() * thumbnails.length);
 			locationsM.push(thumbnails[ind]);
+		}else{
+			locationsM.push({
+				id: x.id,
+				name: x.name,
+				lat: x.lat,
+				lon: x.lon,
+				url : ""
+			})
 		}
 	}));
 	return json({ locationsM });
