@@ -32,7 +32,7 @@
 	onMount(() => {
 		map = new maplibregl.Map({
 			container: 'map',
-			style: `https://api.maptiler.com/maps/hybrid/style.json?key=vCj2ptPvHwdumeLayQPp`,
+			style: `https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json`,
 			center: [0, 0],
 			zoom: 1
 		});

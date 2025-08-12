@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  journal:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - ACCESS_KEY_ID=${ACCESS_KEY_ID}
+        - BUCKET=${BUCKET}
+        - DSN=${DSN}
+        - ENDPOINT=${ENDPOINT}
+        - PASSWORD=${PASSWORD}
+        - SECRET_ACCESS_KEY=${SECRET_ACCESS_KEY}
+    ports:
+      - "3000:3000"
+    environment:
+      - ACCESS_KEY_ID=${ACCESS_KEY_ID}
+      - BUCKET=${BUCKET}
+      - DSN=${DSN}
+      - ENDPOINT=${ENDPOINT}
+      - PASSWORD=${PASSWORD}
+      - SECRET_ACCESS_KEY=${SECRET_ACCESS_KEY}
+      - NODE_ENV=production
+    env_file:
+      - .env
+    restart: unless-stopped

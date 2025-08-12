@@ -1,0 +1,34 @@
+# Dependencies
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Production build
+build
+.svelte-kit
+
+# Environment variables (will be passed as build args)
+# .env
+
+# Git
+.git
+.gitignore
+
+# Documentation
+README.md
+
+# Development files
+.vscode
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+.tmp
+.temp
+
+# Testing
+coverage
