@@ -2,6 +2,7 @@
 	import { type Thumbnail } from '$lib/images';
 	import { Banner, Button, ImagePlaceholder, Modal } from 'flowbite-svelte';
 	import { TrashBinSolid } from 'flowbite-svelte-icons';
+	import { toast } from 'svelte-sonner';
 
 	let { active, data, authed } = $props();
 	let files = $state<File[]>([]);
@@ -20,9 +21,29 @@
 		if (data && data.id > 0) loadThumbnails();
 	});
 
-	function openFullScreen(url: string) {
-		fullResURL = url;
-		fullScreen = true;
+	async function openFullScreen(url: string) {
+		const imageLoadPromise = new Promise<{ name: string }>((resolve, reject) => {
+			const img = new Image();
+			img.onload = () => resolve({ name: 'Image' });
+			img.onerror = () => reject(new Error('Failed to load image'));
+			img.src = url;
+		});
+
+		toast.promise(imageLoadPromise, {
+			loading: 'Loading...',
+			success: (data) => {
+				return data.name + " loaded successfully";
+			},
+			error: 'Error... :( Try again!',
+		});
+
+		try {
+			await imageLoadPromise;
+			fullResURL = url;
+			fullScreen = true;
+		} catch (error) {
+			console.error('Failed to load image:', error);
+		}
 	}
 
 	async function Delete(id: string) {
@@ -88,7 +109,9 @@
 							{#each thumbnails as thumb}
 								<div class="relative">
 									<img
-										onclick={() => openFullScreen(thumb.full)}
+										onclick={() => {
+											openFullScreen(thumb.full)
+										}}
 										src={thumb.url}
 										alt="Thumbnail"
 										class="h-auto w-full rounded object-cover"

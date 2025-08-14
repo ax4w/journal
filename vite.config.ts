@@ -6,5 +6,11 @@ import { config } from 'dotenv';
 config({ path: ".env" });
 
 export default defineConfig({
-	plugins: [tailwindcss(), sveltekit()]
+	plugins: [tailwindcss(), sveltekit()],
+	optimizeDeps: {
+		include: ['svelte-sonner']
+	},
+	ssr: {
+		noExternal: ['svelte-sonner']
+	}
 });

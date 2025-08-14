@@ -52,6 +52,7 @@
 		"postgres": "^3.4.5",
 		"postgres-js": "^0.1.0",
 		"sharp": "^0.34.1",
-		"svelte-clerk": "^0.14.2"
+		"svelte-clerk": "^0.14.2",
+		"svelte-sonner": "^1.0.5"
 	}
 }

@@ -7,6 +7,7 @@
 	import type { Location } from '$lib/location';
 	import { onMount } from 'svelte';
 	import Login from './login.svelte';
+	import { Toaster } from 'svelte-sonner';
 
 	let loggedIn = $state(false);
 	let loginModal = $state(false);
@@ -61,6 +62,7 @@
 </script>
 
 <main class="h-screen">
+	<Toaster />
 	<Map {locations} {Gallery} {searchResult} {SearchPopUp} refresh={load} authed={loggedIn}/>
 	<div class="absolute top-4 right-0 left-0 z-50 hidden sm:grid grid-cols-[auto_1fr_auto] items-center">
 		<div class="ml-4 w-fit rounded-xl bg-neutral-950/50 shadow-xl backdrop-blur-sm">
