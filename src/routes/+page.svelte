@@ -7,66 +7,84 @@
 	import type { Location } from '$lib/location';
 	import { onMount } from 'svelte';
 	import Login from './login.svelte';
-	import { Toaster } from 'svelte-sonner';
+	import { toast, Toaster } from 'svelte-sonner';
 
 	let loggedIn = $state(false);
 	let loginModal = $state(false);
 	let searchInput = $state('');
 	let searchResult = $state<Location[]>([]);
-	let locations = $state<Location[]>([])
+	let locations = $state<Location[]>([]);
 
 	async function search() {
-        searchResult = []
+		searchResult = [];
 		let encodedSearch = encodeURIComponent(searchInput);
 		let data = await (await fetch(`/search/${encodedSearch}`)).json();
-		if(!data.locations) {
-			return
+		if (!data.locations) {
+			return;
 		}
-        (data.locations as Location[]).forEach(e => {
-            searchResult.push({
+		(data.locations as Location[]).forEach((e) => {
+			searchResult.push({
 				id: e.id,
-                name: e.name,
-                lat: e.lat,
-                lon: e.lon,
-				url : "",
-            })
-        })
-		searchInput = ""
+				name: e.name,
+				lat: e.lat,
+				lon: e.lon,
+				url: ''
+			});
+		});
+		searchInput = '';
+	}
+
+	async function update(data: Response) {
+		let body = await data.json();
+		locations = body.locationsM;
+		searchResult = [];
 	}
 
 	async function load() {
-		let resp = await fetch("/list")
+		toast.promise(fetch('/list'), {
+			loading: 'fetching markers...',
+			success: (data) => {
+				update(data)
+				return 'loaded successfully';
+			},
+			error: 'Error... :( Try again!'
+		});
+		/*let resp = await fetch("/list")
 		let body = await resp.json()
 		locations = body.locationsM
-		searchResult = []
+		searchResult = []*/
 	}
 
 	async function auth() {
-		let resp = await fetch("/auth")
-		let body = await resp.json()
-		loggedIn = body.success
+		let resp = await fetch('/auth');
+		let body = await resp.json();
+		loggedIn = body.success;
 	}
 
 	async function logout() {
-		await fetch("/logout", {
-			method: "POST"
-		})
-		await auth()
-		loginModal = false
+		await fetch('/logout', {
+			method: 'POST'
+		});
+		await auth();
+		loginModal = false;
 	}
 
 	onMount(async () => {
-		await load()
-		await auth()
-	})
+		await load();
+		await auth();
+	});
 </script>
 
 <main class="h-screen">
 	<Toaster />
-	<Map {locations} {Gallery} {searchResult} {SearchPopUp} refresh={load} authed={loggedIn}/>
-	<div class="absolute top-4 right-0 left-0 z-50 hidden sm:grid grid-cols-[auto_1fr_auto] items-center">
+	<Map {locations} {Gallery} {searchResult} {SearchPopUp} refresh={load} authed={loggedIn} />
+	<div
+		class="absolute top-4 right-0 left-0 z-50 hidden grid-cols-[auto_1fr_auto] items-center sm:grid"
+	>
 		<div class="ml-4 w-fit rounded-xl bg-neutral-950/50 shadow-xl backdrop-blur-sm">
-			<Button onclick={() => loggedIn ? logout() : (loginModal = true)}><ArrowLeftToBracketOutline /></Button>
+			<Button onclick={() => (loggedIn ? logout() : (loginModal = true))}
+				><ArrowLeftToBracketOutline /></Button
+			>
 		</div>
 		{#if loggedIn}
 			<div class="mx-auto flex w-full max-w-lg rounded-xl shadow-xl backdrop-blur-sm">
@@ -82,4 +100,4 @@
 	</div>
 </main>
 
-<Login onSuccess={auth} onFail={() => loginModal = false} active={loginModal}/>
+<Login onSuccess={auth} onFail={() => (loginModal = false)} active={loginModal} />
