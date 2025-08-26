@@ -3,7 +3,8 @@ Interactive travel / photo map, because photo books are boring :^)
 
 Successor to [photo-map](https://github.com/ax4w/photo-map)
 
-![image](https://github.com/user-attachments/assets/106ecd6f-d793-4100-8f39-a6a940ed753d)
+<img width="1436" height="978" alt="image" src="https://github.com/user-attachments/assets/c1678d3f-31a0-411b-8b42-fb6eab0c96a0" />
+
 
 
 ## Techstack
