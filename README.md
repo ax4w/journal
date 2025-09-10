@@ -18,6 +18,7 @@ SECRET_ACCESS_KEY=<bucket access secret>
 BUCKET=<bucket name>
 ENDPOINT=https://url-to-your-bucket
 PASSWORD=<admin password>
+BODY_SIZE_LIMIT=1G
 ```
 All these environment variables need to be set. I can recommend to use [neon](https://neon.tech) for the database and [Cloudflare R2](https://www.cloudflare.com/de-de/developer-platform/products/r2/) for the buckets. 
 
