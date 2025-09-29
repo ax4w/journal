@@ -65,7 +65,6 @@
 			console.log('no files selected');
 			return;
 		}
-		alert('started uploading');
 		for (const file of files) {
 			const formData = new FormData();
 			formData.append('file', file);
@@ -83,7 +82,6 @@
 				console.log(`${file.name}: Upload failed`);
 			}
 		}
-		alert('finished uploading');
 		files = [];
 		if (active) {
 			await loadThumbnails();
